@@ -1,6 +1,6 @@
 # Parcial 2 · Respuestas de razonamiento
 
-Nombre:
+Nombre: Santiago Muñoz Alvaran
 
 Son cuatro preguntas de 5 puntos sobre código que ya conoces. Para cada una:
 
