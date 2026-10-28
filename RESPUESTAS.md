@@ -28,15 +28,15 @@ console.log('5');
 
 **(a)** Los cinco números en el orden en que salen en la consola. (2 pts)
 
-Respuesta:
+Respuesta: Salen 1, 3, 5, 2, 4.
 
 **(b)** Por qué el `3` sale **antes** que el `5`, si `cargar` es una función `async`. (2 pts)
 
-Respuesta:
+Respuesta: Porque el `3` está antes del await, lo que hace que se ejecute primero que el `5`.
 
 **(c)** Por qué el `5` no espera a que termine el `fetch`, y por qué el `2` y el `4` salen al final. (1 pt)
 
-Respuesta:
+Respuesta: Porque el await suspende el `fetch`. Porque así el timeout sea de 0, debe esperar a que se ejecute el resto de código, y el `4` es el último porque se ejecuta cuando la red responde.
 
 ## P2 · Un 404 que no llega al catch (5 puntos)
 
@@ -56,11 +56,11 @@ try {
 
 **(a)** Qué imprime la consola, exactamente. (1 pt)
 
-Respuesta:
+Respuesta: Imprime `GET https://rickandmortyapi.com/api/episode/9999 404 (Not Found) - Episodio: undefined`.
 
 **(b)** Por qué **no** entra al `catch`, aunque el episodio no existe. Pista: piensa en la diferencia entre «el servidor respondió con un 404» y «no hubo respuesta» (por ejemplo, sin internet). (2 pts)
 
-Respuesta:
+Respuesta: Porque el error 404 no es un fallo del sistema o del servidor, es un fallo de datos en los archivos.
 
 **(c)** La línea que falta para que sí entre al `catch`: escríbela e indica en qué parte del código va. Luego escribe qué imprimiría la consola con esa línea. (2 pts)
 
@@ -81,23 +81,23 @@ const recuperado = JSON.parse(leido);  // (c)
 
 **(a)** Qué imprime la línea marcada (a): el valor y su tipo. (1 pt)
 
-Respuesta:
+Respuesta: Imprime `1,5,8 string`.
 
 **(b)** Qué imprime la línea marcada (b), y por qué da ese número. (1 pt)
 
-Respuesta:
+Respuesta: Imprime `5`, y da ese número porque es la cantidad de carácteres que están en `vistos`.
 
 **(c)** Qué pasa en la línea marcada (c): ¿funciona o sale un error? Si sale un error, cuál y por qué. (1 pt)
 
-Respuesta:
+Respuesta: Sale el error `Uncaught SyntaxError` porque JSON no admite las comas que hay dentro del `vistos`.
 
 **(d)** La segunda línea corregida, para que `recuperado` vuelva a ser el array `[1, 5, 8]`. (1 pt)
 
-Respuesta:
+Respuesta: localStorage.setItem('vistos', JSON.stringify(vistos));
 
 **(e)** Por qué en tu `leerVistos` el `JSON.parse` va dentro de un `try/catch`: qué podría pasarle a la app si no estuviera. (1 pt)
 
-Respuesta:
+Respuesta: Porque si el texto que se guardó está dañado, entonces lanza un error.
 
 ## P4 · Botones que dejan de funcionar (5 puntos)
 
@@ -118,12 +118,18 @@ document.querySelectorAll('[data-id]').forEach((boton) => {
 
 **(a)** Qué les pasó a los botones. Pista: fíjate en qué hace `render()` con el contenido de `#lista` cada vez que se llama, y en cuántas veces se ejecuta el `forEach`. (2 pts)
 
-Respuesta:
+Respuesta: Eso pasa porque el `forEach` solo se ejecuta una vez.
 
 **(b)** El código reescrito con **delegación**: un solo listener en `#lista` que funcione con cualquier botón, aunque `render()` lo haya creado después. Se revisan tres cosas, 1 punto cada una: que el listener esté en `#lista` y no en los botones; que use `closest('[data-id]')` (o algo equivalente) para saber qué botón se presionó; y que no haga nada si el clic no fue en un botón. (3 pts)
 
 Respuesta:
 
 ```js
-
+lista.addEventListener('click', (evento) => {
+  const boton = evento.target.closest('[data-id]');
+  if (!boton) return;
+  vistos = alternarId(vistos, Number(boton.dataset.id));
+  guardarVistos(vistos);
+  render();
+});
 ```
